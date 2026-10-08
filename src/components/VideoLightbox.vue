@@ -2,7 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { ArrowUpRight, Film, X } from 'lucide-vue-next'
 import { getThumbnail, resolveMedia } from '../utils/media'
-import ClapperboardLoader from './ClapperboardLoader.vue'
+import LoadingIndicator from './LoadingIndicator.vue'
 
 const props = defineProps({ project: { type: Object, required: true } })
 const emit = defineEmits(['close'])
@@ -63,7 +63,7 @@ function onBackdrop(event) {
       <div class="player" :class="{ 'vertical-player': project.mediaType === 'instagram' }">
         <template v-if="media"
           ><div v-if="loading" class="player-loading">
-            <ClapperboardLoader label="Loading film…" />
+            <LoadingIndicator label="Loading film…" />
           </div>
           <div v-else-if="playerDelayed" class="player-loading player-delayed" role="status">
             This is taking a little longer. You can watch using the link below.

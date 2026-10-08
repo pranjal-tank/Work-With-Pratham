@@ -23,8 +23,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import WorkProjectGrid from './components/WorkProjectGrid.vue'
 import HeroCarousel from './components/HeroCarousel.vue'
-import ClapperboardLoader from './components/ClapperboardLoader.vue'
-import CategoryHeading from './components/CategoryHeading.vue'
+import LoadingIndicator from './components/LoadingIndicator.vue'
 import { brandSubsections, categories, projectsData } from './data/projects'
 import { getProjectSections } from './utils/projectSections'
 import { profile } from './data/profile'
@@ -46,6 +45,15 @@ const mobileMenuOpen = ref(false)
 const headerHidden = ref(false)
 const headerScrolled = ref(false)
 const currentSection = ref('work')
+
+function splitCategoryHeading(label) {
+  const words = label.trim().split(/\s+/)
+  return {
+    leading: words.length > 1 ? words.slice(0, -1).join(' ') : words[0],
+    trailing: words.length > 1 ? words.at(-1) : '',
+  }
+}
+
 const workCategories = computed(() =>
   categories
     .filter(
@@ -55,6 +63,7 @@ const workCategories = computed(() =>
     )
     .map((category) => ({
       ...category,
+      heading: splitCategoryHeading(category.label),
       sections: getProjectSections(projectsData, brandSubsections, category.id),
     }))
     .filter((category) => category.sections.length),
@@ -180,7 +189,7 @@ onBeforeUnmount(() => {
 <template>
   <Transition name="site-loader">
     <div v-if="siteLoading" class="site-loader">
-      <ClapperboardLoader label="Loading…" />
+      <LoadingIndicator label="Loading…" />
     </div>
   </Transition>
   <div ref="root" :inert="siteLoading" :aria-busy="siteLoading">
@@ -238,16 +247,6 @@ onBeforeUnmount(() => {
         />
       </section>
 
-      <div class="specialties-strip">
-        <div class="page-width">
-          <span>Director of Photography</span><span class="strip-star">✳</span
-          ><span>Associate DP</span><span class="strip-star">✳</span> 
-          <span>Camera Operator</span><span class="strip-star">✳</span>
-          <span>1st AC</span><span class="strip-star">✳</span>
-          <span>Editor</span>
-        </div>
-      </div>
-
       <section id="work" class="work-section page-width">
         <div class="filter-bar" aria-label="Filter projects by category">
           <div class="filter-options">
@@ -273,7 +272,11 @@ onBeforeUnmount(() => {
           :aria-labelledby="`category-heading-${category.id}`"
         >
           <h2 :id="`category-heading-${category.id}`" class="category-heading">
-            <CategoryHeading :label="category.label" />
+            {{ category.heading.leading }}<span
+              v-if="category.heading.trailing"
+              class="category-heading-accent"
+              >&nbsp;{{ category.heading.trailing }}</span
+            >
           </h2>
           <section
             v-for="section in category.sections"
@@ -315,10 +318,7 @@ onBeforeUnmount(() => {
           </h2>
           <p class="about-intro">{{ profile.introduction }}</p>
           <p class="about-description">{{ profile.biography }}</p>
-          <a href="#contact" class="text-link"
-            >Let’s make something meaningful <ArrowUpRight :size="18"
-          /></a>
-          <div class="signature">Pratham</div>
+          <div class="signature">Pratham Pariharr</div>
         </div>
       </section>
 
@@ -335,6 +335,15 @@ onBeforeUnmount(() => {
             <a :href="`mailto:${profile.email}`" class="contact-cta contact-cta-email">
               <Mail :size="18" aria-hidden="true" /> Email me
             </a>
+            <a
+              v-if="profile.instagramUrl"
+              :href="profile.instagramUrl"
+              class="contact-cta contact-cta-email"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Instagram :size="18" aria-hidden="true" /> Instagram
+            </a>
             <a :href="`tel:${profile.phone.replace(/\s/g, '')}`" class="contact-cta">
               <Phone :size="18" aria-hidden="true" /> Call {{ profile.phone }}
             </a>
@@ -347,15 +356,7 @@ onBeforeUnmount(() => {
       <a href="#home" class="footer-brand"
         >WORK WITH PRATHAM<span>© {{ new Date().getFullYear() }}</span></a
       >
-      <div class="footer-links">
-        <a
-          v-if="profile.instagramUrl"
-          :href="profile.instagramUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Pratham on Instagram"
-          ><Instagram :size="18" /></a
-        ><a
+      <div class="footer-links"><a
           v-if="profile.youtubeUrl"
           :href="profile.youtubeUrl"
           target="_blank"

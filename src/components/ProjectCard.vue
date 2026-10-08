@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { ArrowUpRight, Clapperboard, Play } from 'lucide-vue-next'
 import { getThumbnail, resolveMedia } from '../utils/media'
-import ClapperboardLoader from './ClapperboardLoader.vue'
+import LoadingIndicator from './LoadingIndicator.vue'
 
 const props = defineProps({
   project: { type: Object, required: true },
@@ -63,7 +63,7 @@ function onImageLoad(event) {
           @error="onImageError"
         />
         <div v-if="imageLoading" class="project-loading">
-          <ClapperboardLoader label="Loading preview…" compact />
+          <LoadingIndicator label="Loading preview…" compact />
         </div>
         <div v-else-if="imageFailed" class="project-loading preview-unavailable">
           <Clapperboard :size="32" aria-hidden="true" />

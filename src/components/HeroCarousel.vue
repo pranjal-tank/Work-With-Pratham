@@ -127,8 +127,6 @@ onBeforeUnmount(() => {
           @error="onError($event, index)"
         />
       </template>
-      <div class="hero-vignette"></div>
-      <div class="hero-grain"></div>
     </div>
     <div
       class="carousel-controls"
@@ -190,7 +188,7 @@ onBeforeUnmount(() => {
   border-radius: 3px;
   background: #05050566;
   backdrop-filter: blur(12px);
-  color: #d4d0c6;
+  color: #d5ebee;
   pointer-events: auto;
   transition: color 0.25s;
 }
@@ -201,7 +199,7 @@ onBeforeUnmount(() => {
   right: 20px;
 }
 .carousel-arrow:hover {
-  color: #c5b294;
+  color: #67e8f9;
 }
 @media (max-width: 760px) {
   .carousel-arrow {
