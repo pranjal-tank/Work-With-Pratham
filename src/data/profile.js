@@ -11,4 +11,5 @@ export const profile = {
     If you want someone who can take ownership of the frame and elevate the project without slowing it down, let’s work.`,
   instagramUrl: 'https://www.instagram.com/prathammpariharr?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw==',
   youtubeUrl: '',
+  imdbUrl: 'https://www.imdb.com/name/nm15755516/',
 }

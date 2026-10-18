@@ -7,8 +7,10 @@ import LoadingIndicator from './LoadingIndicator.vue'
 const props = defineProps({ project: { type: Object, required: true } })
 const emit = defineEmits(['close'])
 const dialog = ref(null)
+const nativeVideo = ref(null)
 const loading = ref(true)
 const playerDelayed = ref(false)
+const playerFailed = ref(false)
 let playerTimeout
 const media = computed(() => resolveMedia(props.project))
 const previousFocus = document.activeElement
@@ -27,15 +29,33 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   clearTimeout(playerTimeout)
+  if (nativeVideo.value) {
+    nativeVideo.value.pause()
+    nativeVideo.value.removeAttribute('src')
+    nativeVideo.value.load()
+  }
   dialog.value?.close()
   document.body.style.overflow = previousOverflow
   previousFocus?.focus({ preventScroll: true })
 })
 
 function onPlayerLoad() {
+  if (nativeVideo.value && (!nativeVideo.value.videoWidth || !nativeVideo.value.videoHeight)) {
+    onPlayerError()
+    return
+  }
   clearTimeout(playerTimeout)
   loading.value = false
   playerDelayed.value = false
+  playerFailed.value = false
+}
+
+function onPlayerError() {
+  clearTimeout(playerTimeout)
+  nativeVideo.value?.pause()
+  loading.value = false
+  playerDelayed.value = false
+  playerFailed.value = true
 }
 
 function onBackdrop(event) {
@@ -65,10 +85,37 @@ function onBackdrop(event) {
           ><div v-if="loading" class="player-loading">
             <LoadingIndicator label="Loading film…" />
           </div>
-          <div v-else-if="playerDelayed" class="player-loading player-delayed" role="status">
-            This is taking a little longer. You can watch using the link below.
+          <div
+            v-else-if="playerDelayed || playerFailed"
+            class="player-loading player-delayed"
+            role="status"
+          >
+            {{
+              playerFailed
+                ? 'Unable to play this video. Please close and reopen it to try again.'
+                : media.videoUrl
+                  ? 'This is taking a little longer. Please wait for the video to load.'
+                  : 'This is taking a little longer. You can watch using the link below.'
+            }}
           </div>
+          <video
+            v-if="media.videoUrl"
+            ref="nativeVideo"
+            :src="media.videoUrl"
+            :poster="getThumbnail(project)"
+            :aria-label="project.title"
+            controls
+            controlslist="nodownload"
+            autoplay
+            playsinline
+            preload="metadata"
+            @loadeddata="onPlayerLoad"
+            @playing="onPlayerLoad"
+            @error="onPlayerError"
+            @contextmenu.prevent
+          ></video>
           <iframe
+            v-else
             :src="media.embedUrl"
             :title="project.title"
             allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
@@ -108,13 +155,14 @@ function onBackdrop(event) {
         </dl>
       </div>
       <a
-        v-if="media"
+        v-if="media && !media.videoUrl"
         :href="media.externalUrl"
         target="_blank"
         rel="noopener noreferrer"
         class="player-external"
         >Player unavailable? Watch on
-        {{ project.mediaType === 'youtube' ? 'YouTube' : 'Instagram' }} <ArrowUpRight :size="15"
+        {{ project.mediaType === 'youtube' ? 'YouTube' : 'Instagram' }}
+        <ArrowUpRight :size="15"
       /></a>
     </div>
   </dialog>

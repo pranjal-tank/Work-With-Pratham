@@ -28,6 +28,9 @@ coverage
 
 .eslintcache
 
+# Keep large original video masters out of the repository.
+/public/videos/*.mov
+
 # Cypress
 /cypress/videos/
 /cypress/screenshots/

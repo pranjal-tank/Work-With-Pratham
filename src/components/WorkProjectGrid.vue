@@ -5,7 +5,9 @@ import ProjectCard from './ProjectCard.vue'
 
 const props = defineProps({ projects: { type: Array, required: true } })
 defineEmits(['open'])
-const films = computed(() => props.projects.filter((project) => project.mediaType === 'youtube'))
+const films = computed(() =>
+  props.projects.filter((project) => ['youtube', 'video'].includes(project.mediaType)),
+)
 const reels = computed(() => props.projects.filter((project) => project.mediaType === 'instagram'))
 const reelTrack = ref(null)
 const hasOverflow = ref(false)

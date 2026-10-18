@@ -2,6 +2,11 @@ export function resolveMedia(project) {
   const value = project.embedIdOrUrl?.trim()
   if (!value || /placeholder/i.test(value)) return null
 
+  if (project.mediaType === 'video') {
+    if (!/^\/videos\/[\w-]+\.mp4$/.test(value)) return null
+    return { videoUrl: value, externalUrl: value }
+  }
+
   let identifier = value
   if (/^https?:\/\//i.test(value)) {
     let url

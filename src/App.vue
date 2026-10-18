@@ -23,6 +23,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import WorkProjectGrid from './components/WorkProjectGrid.vue'
 import HeroCarousel from './components/HeroCarousel.vue'
+import ImdbIcon from './components/ImdbIcon.vue'
 import LoadingIndicator from './components/LoadingIndicator.vue'
 import { brandSubsections, categories, projectsData } from './data/projects'
 import { getProjectSections } from './utils/projectSections'
@@ -318,7 +319,7 @@ onBeforeUnmount(() => {
           </h2>
           <p class="about-intro">{{ profile.introduction }}</p>
           <p class="about-description">{{ profile.biography }}</p>
-          <div class="signature">Pratham Pariharr</div>
+          <div class="signature">Pratham Parihar</div>
         </div>
       </section>
 
@@ -343,6 +344,15 @@ onBeforeUnmount(() => {
               rel="noopener noreferrer"
             >
               <Instagram :size="18" aria-hidden="true" /> Instagram
+            </a>
+            <a
+              v-if="profile.imdbUrl"
+              :href="profile.imdbUrl"
+              class="contact-cta contact-cta-email"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <ImdbIcon /> IMDb
             </a>
             <a :href="`tel:${profile.phone.replace(/\s/g, '')}`" class="contact-cta">
               <Phone :size="18" aria-hidden="true" /> Call {{ profile.phone }}
