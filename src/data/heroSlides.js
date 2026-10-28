@@ -12,6 +12,12 @@ export const heroSlides = [
     position: '50% 50%',
   },
   {
+    id: 'frame-16',
+    src: '/images/hero/image-16.png',
+    alt: 'A comedian performing on a stage with purple lights and golden spotlights',
+    position: '55% 50%',
+  },
+  {
     id: 'frame-03',
     src: '/images/hero/image-3.jpg',
     alt: 'A couple standing together in a warmly lit home',
@@ -22,6 +28,12 @@ export const heroSlides = [
     src: '/images/hero/image-4.jpg',
     alt: 'Two men sharing coffee on a sunlit balcony',
     position: '50% 50%',
+  },
+  {
+    id: 'frame-13',
+    src: '/images/hero/image-13.png',
+    alt: 'Five panelists laughing together in front of a live audience',
+    position: '60% 50%',
   },
   {
     id: 'frame-05',
@@ -36,6 +48,12 @@ export const heroSlides = [
     position: '50% 50%',
   },
   {
+    id: 'frame-15',
+    src: '/images/hero/image-15.png',
+    alt: 'A comedian performing before red curtains and blue stage lights',
+    position: '45% 50%',
+  },
+  {
     id: 'frame-07',
     src: '/images/hero/image-7.png',
     alt: 'A family enjoying a picnic beside a canvas tent',
@@ -48,6 +66,12 @@ export const heroSlides = [
     position: '60% 50%',
   },
   {
+    id: 'frame-12',
+    src: '/images/hero/image-12.png',
+    alt: 'A stand-up comedian holding a microphone at a comedy club',
+    position: '50% 50%',
+  },
+  {
     id: 'frame-09',
     src: '/images/hero/image-9.png',
     alt: 'Three models in traditional attire beneath a palace chandelier',
@@ -58,6 +82,12 @@ export const heroSlides = [
     src: '/images/hero/image-10.png',
     alt: 'A model in red bridal attire and jewellery against green hills',
     position: '57% 50%',
+  },
+  {
+    id: 'frame-14',
+    src: '/images/hero/image-14.png',
+    alt: 'A comedian on a theatre stage with blue curtains and golden picture frames',
+    position: '70% 50%',
   },
   {
     id: 'frame-11',
