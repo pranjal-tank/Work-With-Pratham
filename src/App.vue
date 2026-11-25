@@ -281,7 +281,7 @@ onBeforeUnmount(() => {
           </h2>
           <section
             v-for="section in category.sections"
-            :key="section.title ? `brand-${section.id}` : 'ungrouped'"
+            :key="section.id"
             class="work-group"
             :class="{ 'brand-subsection': section.title }"
             :aria-label="section.title || `${category.label} projects`"

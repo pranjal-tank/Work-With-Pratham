@@ -4,6 +4,7 @@ export function getProjectSections(projects, subsections, category = 'all') {
   )
   const projectsById = new Map(visibleProjects.map((project) => [project.id, project]))
   const assigned = new Set()
+  const inlineGroups = new Map()
   const groups = []
 
   for (const subsection of subsections) {
@@ -15,9 +16,26 @@ export function getProjectSections(projects, subsections, category = 'all') {
       members.push(project)
       assigned.add(id)
     }
-    if (members.length) groups.push({ ...subsection, projects: members })
+    if (!members.length) continue
+    const group = { ...subsection, projects: members }
+    if (subsection.inline) inlineGroups.set(members[0].id, group)
+    else groups.push(group)
   }
 
-  const ungrouped = visibleProjects.filter((project) => !assigned.has(project.id))
-  return [...(ungrouped.length ? [{ id: 'ungrouped', projects: ungrouped }] : []), ...groups]
+  const sections = []
+  let ungrouped
+  for (const project of visibleProjects) {
+    const inlineGroup = inlineGroups.get(project.id)
+    if (inlineGroup) {
+      sections.push(inlineGroup)
+      ungrouped = undefined
+    } else if (!assigned.has(project.id)) {
+      if (!ungrouped) {
+        ungrouped = { id: sections.length ? `ungrouped-${project.id}` : 'ungrouped', projects: [] }
+        sections.push(ungrouped)
+      }
+      ungrouped.projects.push(project)
+    }
+  }
+  return [...sections, ...groups]
 }
